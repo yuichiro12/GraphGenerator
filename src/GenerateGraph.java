@@ -177,9 +177,9 @@ public class GenerateGraph {
 		}
 
 		// draw edges
+		covered_nodes.add(nodes.remove(0));
 		for (int i = 0; i < n_nodes - 1; i++) {
 			Collections.shuffle(nodes);
-			covered_nodes.add(nodes.remove(0));
 			Collections.shuffle(covered_nodes);
 			System.out.println(nodes);
 			System.out.println(covered_nodes);
