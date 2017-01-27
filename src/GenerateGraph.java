@@ -24,7 +24,7 @@ public class GenerateGraph {
         // TODO: get values from arguments
         File file = new File(name + ".dot");
         Random rdm = new Random();
-        name = properties.get("name");
+        name = "graph";
         graphtype = properties.get("graphtype");
 		drawtype = properties.get("drawtype");
 		n_nodes = Integer.parseInt(properties.get("nodes"));
@@ -102,15 +102,15 @@ public class GenerateGraph {
 		String query = setNodes();
 		List<Integer> nodes = new ArrayList<>();
 
+		// create node list
 		for (int i = 1; i <= n_nodes; i++) {
 			nodes.add(i);
 		}
-		System.out.println(is_loop);
-		System.out.println(nodes);
 		// draw edges
 		for (int i = 0; i < n_edges; i++) {
 			Collections.shuffle(nodes);
 			String v1 = String.valueOf(nodes.get(0));
+
 			// if loop is allowed, choose randomly. Else, v1 != v2.
 			String v2 = String.valueOf(nodes.get(is_loop ? rdm.nextInt(n_nodes) : 1));
 			int len = rdm.nextInt(15) + 1;
@@ -163,20 +163,35 @@ public class GenerateGraph {
 		return query;
 	}
 
-	// TODO: spanning tree
+	// TODO
 	public static String spanningTree() {
 		// draw nodes
 		String query = setNodes();
-		// draw edges
+
+		// create node list
+		List<Integer> nodes = new ArrayList<>();
+		List<Integer> covered_nodes = new ArrayList<>();
+
 		for (int i = 1; i <= n_nodes; i++) {
-			for (int j = 1; j < i; j++) {
-				int len = rdm.nextInt(15) + 1;
-				query = query + "\t" + i + " -- " + j + " ["
-						+ "label = " + len + ", "
-						+ "weight = " + 1 / len + "]"
-						+ ";"
-						+ System.getProperty("line.separator");
-			}
+			nodes.add(i);
+		}
+
+		// draw edges
+		for (int i = 0; i < n_nodes - 1; i++) {
+			Collections.shuffle(nodes);
+			covered_nodes.add(nodes.remove(0));
+			Collections.shuffle(covered_nodes);
+			System.out.println(nodes);
+			System.out.println(covered_nodes);
+			int len = rdm.nextInt(15) + 1;
+			int v1 = covered_nodes.get(0);
+			int v2 = nodes.remove(0);
+			covered_nodes.add(v2);
+			query = query + "\t" + v1 + " -- " + v2 + " ["
+					+ "label = " + len + ", "
+					+ "weight = " + 1 / len + "]"
+					+ ";"
+					+ System.getProperty("line.separator");
 		}
 
 		return query;

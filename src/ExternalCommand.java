@@ -29,7 +29,7 @@ public class ExternalCommand {
         }
     }
 
-    public static void printInputStream (InputStream is) throws IOException {
+    public static void printInputStream (InputStream is) {
         BufferedReader br = new BufferedReader(new InputStreamReader(is));
         try {
             for (;;) {
@@ -37,8 +37,10 @@ public class ExternalCommand {
                 if (line == null) break;
                 System.out.println(line);
             }
-        } finally {
             br.close();
+        } catch (IOException e) {
+            br = null;
+            e.printStackTrace();
         }
     }
 }
