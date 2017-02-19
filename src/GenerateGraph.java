@@ -9,7 +9,6 @@ public class GenerateGraph {
 	private static Random rdm = new Random();
 	private static String graphtype = "directed";
 	private static String direction = "digraph";
-	private static String drawtype = "dot";
 	private static String arrowsize = "0.5";
 	private static String arrowhead = "vee";
 	private static String splines = "true";
@@ -26,7 +25,6 @@ public class GenerateGraph {
         Random rdm = new Random();
         name = "graph";
         graphtype = properties.get("graphtype");
-		drawtype = properties.get("drawtype");
 		n_nodes = Integer.parseInt(properties.get("nodes"));
 		n_edges = Integer.parseInt(properties.get("edges"));
 		is_multiple = Boolean.valueOf(properties.get("multiple"));
@@ -70,7 +68,7 @@ public class GenerateGraph {
         try {
             filewriter = new FileWriter(file);
             filewriter.write(direction + " {" + System.getProperty("line.separator"));
-            filewriter.write("\t" + "graph [shape = " + drawtype + ", splines = " + splines + "];"+ System.getProperty("line.separator"));
+            filewriter.write("\t" + "graph [splines = " + splines + "];"+ System.getProperty("line.separator"));
             filewriter.write("\t" + "edge [arrowsize = " + arrowsize + ", arrowhead = " + arrowhead + "];"+ System.getProperty("line.separator"));
             filewriter.write("\t" + "node [shape = " + nodesshape + ", fixedsize = true,  width = 0.3" + "];"+ System.getProperty("line.separator"));
 			// draw graph according to input property
@@ -181,8 +179,6 @@ public class GenerateGraph {
 		for (int i = 0; i < n_nodes - 1; i++) {
 			Collections.shuffle(nodes);
 			Collections.shuffle(covered_nodes);
-			System.out.println(nodes);
-			System.out.println(covered_nodes);
 			int len = rdm.nextInt(15) + 1;
 			int v1 = covered_nodes.get(0);
 			int v2 = nodes.remove(0);

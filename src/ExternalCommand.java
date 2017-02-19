@@ -4,8 +4,8 @@
 import java.io.*;
 
 public class ExternalCommand {
-    public static boolean draw (String name, File file) {
-        ProcessBuilder dot = new ProcessBuilder("dot", file.getAbsolutePath(), "-Tpng", "-o", name + ".png");
+    public static boolean draw (String name, String drawtype, File file) {
+        ProcessBuilder dot = new ProcessBuilder(drawtype, file.getAbsolutePath(), "-Tpng", "-o", name + ".png");
         try {
             Process p1 = dot.start();
             p1.waitFor();
@@ -20,14 +20,6 @@ public class ExternalCommand {
         return true;
     }
 
-    public static void open(String name) {
-        ProcessBuilder open = new ProcessBuilder("open", name + ".png");
-        try {
-            open.start();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
 
     public static void printInputStream (InputStream is) {
         BufferedReader br = new BufferedReader(new InputStreamReader(is));

@@ -4,6 +4,7 @@
 
 import java.awt.*;
 import java.awt.event.*;
+import java.io.File;
 import java.util.HashMap;
 import java.util.Map;
 import javax.swing.*;
@@ -12,6 +13,9 @@ import javax.swing.border.BevelBorder;
 
 public class GraphUI extends JFrame implements ActionListener {
     private static final long serialVersionUID = 1L;
+
+    // Make a Panel
+    JPanel panelBase = null;
 
     // ComboBox Model
     private DefaultComboBoxModel<String> graphType = null;
@@ -54,7 +58,7 @@ public class GraphUI extends JFrame implements ActionListener {
     // Constractor
     public GraphUI() {
         // Make a Panel
-        JPanel panelBase = new JPanel();
+        panelBase = new JPanel();
 
         // ComboBoxModel
         graphType = new DefaultComboBoxModel<>();
@@ -83,6 +87,7 @@ public class GraphUI extends JFrame implements ActionListener {
         nodelabel = new JLabel("nodes");
         edgelabel = new JLabel("edges");
         label = new JLabel();
+
         label.setPreferredSize(new Dimension(500, 20));
         label.setBorder(new BevelBorder(BevelBorder.LOWERED));
         label.setBackground(Color.black);
@@ -219,10 +224,19 @@ public class GraphUI extends JFrame implements ActionListener {
 
     public void drawGraph(Map<String, String> properties) {
         String name = "graph";
-        boolean is_draw = ExternalCommand.draw(name, GenerateGraph.generateGraphSource(properties));
+        File file = GenerateGraph.generateGraphSource(properties);
+        boolean is_draw = ExternalCommand.draw(name, properties.get("drawtype"), file);
         if (is_draw) {
-            ExternalCommand.open(name);
+            showGraph(name);
         }
+    }
+
+    public void showGraph(String name) {
+        JLabel image = new JLabel();
+        image.setIcon(new ImageIcon(name + ".png"));
+        panelBase.add(image);
+        panelBase.revalidate();
+        panelBase.repaint();
     }
 }
 
